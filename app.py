@@ -17,7 +17,7 @@ st.write("Aplikasi analisis peramalan produksi komoditas padi berbasis data runt
 # --- BARIS SAMPING (SIDEBAR) ---
 st.sidebar.header("🎛️ Pengaturan & Input Data")
 
-# Fitur Unggah File Excel atau CSV (Fitur Baru!)
+# Fitur Unggah File Excel atau CSV
 st.sidebar.markdown("### 📅 Unggah Data Historis")
 file_terunggah = st.sidebar.file_uploader("Pilih file Excel (.xlsx) atau CSV", type=["xlsx", "csv"])
 
@@ -33,7 +33,6 @@ arima_d = st.sidebar.slider("Orde Differencing (d)", 0, 2, 0)
 arima_q = st.sidebar.slider("Orde Moving Average (q)", 0, 3, 1)
 
 # --- MEMPROSES DATA ---
-# Jika user sudah mengunggah file, baca file tersebut
 if file_terunggah is not None:
     try:
         if file_terunggah.name.endswith('.csv'):
@@ -41,7 +40,6 @@ if file_terunggah is not None:
         else:
             df_input = pd.read_excel(file_terunggah)
         
-        # Validasi struktur kolom file BPS (Harus ada kolom 'Tahun' dan 'Produksi')
         if 'Tahun' in df_input.columns and 'Produksi' in df_input.columns:
             df = df_input[['Tahun', 'Produksi']].dropna().copy()
             df = df.sort_values(by='Tahun').reset_index(drop=True)
@@ -55,11 +53,10 @@ if file_terunggah is not None:
         st.error(f"Gagal membaca file: {e}")
         st.stop()
 else:
-    # Data bawaan (Template Simulasi jika file belum diunggah)
     st.info("💡 Menampilkan data simulasi awal. Silakan unggah file Excel/CSV di panel samping untuk menganalisis data riil Anda.")
     tahun = np.arange(2015, 2026)
-    t = tahun - 2015
-    data_produksi = np.array([1500, 1650, 1800, 1920, 1980, 2050, 2020, 2100, 2180, 2220, 2250])
+    t = year_t = tahun - 2015
+    data_produksi = np.array([1500, 1650, 1800, 1920, 1980, 2050, 2020, 2100, 2180, 2220, 2270])
     df = pd.DataFrame({'Tahun': tahun, 't': t, 'Y_aktual': data_produksi})
 
 # --- PROSES MATEMATIKA MODEL HYBRID ---
