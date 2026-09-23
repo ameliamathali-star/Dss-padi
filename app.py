@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import matplotlib.subplots as axs
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from statsmodels.tsa.arima.model import ARIMA
