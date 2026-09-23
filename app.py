@@ -1,10 +1,23 @@
+import os
+import subprocess
+import sys
+
+# Memaksa server menginstal pustaka matematika jika tidak ditemukan
+try:
+    import matplotlib.pyplot as plt
+    from scipy.optimize import curve_fit
+    from statsmodels.tsa.arima.model import ARIMA
+    from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
+except ModuleNotFoundError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "matplotlib", "scipy", "statsmodels", "scikit-learn", "openpyxl"])
+    import matplotlib.pyplot as plt
+    from scipy.optimize import curve_fit
+    from statsmodels.tsa.arima.model import ARIMA
+    from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
+
 import streamlit as st
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
-from statsmodels.tsa.arima.model import ARIMA
-from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 
 # Konfigurasi Tampilan Halaman (Ramah Mobile)
 st.set_page_config(page_title="DSS Ketahanan Pangan Aceh", layout="centered")
@@ -55,8 +68,8 @@ if file_terunggah is not None:
 else:
     st.info("💡 Menampilkan data simulasi awal. Silakan unggah file Excel/CSV di panel samping untuk menganalisis data riil Anda.")
     tahun = np.arange(2015, 2026)
-    t = year_t = tahun - 2015
-    data_produksi = np.array([1500, 1650, 1800, 1920, 1980, 2050, 2020, 2100, 2180, 2220, 2270])
+    t = tahun - 2015
+    data_produksi = np.array([2100, 2150, 2180, 2210, 2230, 2200, 2190, 2240, 2260, 2275, 2280])
     df = pd.DataFrame({'Tahun': tahun, 't': t, 'Y_aktual': data_produksi})
 
 # --- PROSES MATEMATIKA MODEL HYBRID ---
