@@ -1,4 +1,0 @@
-scipy
-statsmodels
-scikit-learn
-openpyxl
